@@ -1,0 +1,12 @@
+# Stop any preparation first: Ctrl+C and wait for the prompt.
+# Copies prepared/ to the WD Black NVMe, verifies it, retains an HDD backup,
+# and links the original path to the SSD. No source images or labels change.
+
+cd /media/avlab/1CE6451EE644FA12/2026_10_22_dinomaly/comparison_cold_start_20261109
+bash MOVE_PREPARED_TO_SSD.sh --execute
+
+# Only continue after "SSD relocation complete":
+bash run.sh prepare --resume --workers 4
+
+# Training/evaluation will also use the SSD through the same prepared/ path.
+# To preview the migration without copying: bash MOVE_PREPARED_TO_SSD.sh

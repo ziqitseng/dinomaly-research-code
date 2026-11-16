@@ -1,0 +1,27 @@
+run_id: 20261031_gpu01
+categories: [lattice_block_plug, laser_diode, power_jack, LED_indicator, thyristor]
+failure_enriched_categories: [lattice_block_plug, laser_diode, power_jack]
+preselected_comparison_category: thyristor
+common_grid:
+  source_size: [1024, 1024]
+  source_xyxy: [64, 64, 960, 960]
+  output_size: [224, 224]
+  ground_truth_interpolation: nearest
+  arcad_map_interpolation: bilinear
+  d2_map_crop_256_xyxy: [16, 16, 240, 240]
+map_postprocess: {gaussian_kernel: 5, gaussian_sigma: 4}
+image_object_score: top_1_percent_mean
+calibration:
+  normal_objects_per_category: 10
+  normal_object_fpr_targets: [0.01, 0.05, 0.10]
+  pixel_fpr_targets: [0.01, 0.05]
+  quantile_method: higher
+  comparison_excludes_calibration_objects: true
+metrics:
+  pro_connectivity: 8
+  pro_threshold_count: 200
+  pro_fpr_cap: 0.30
+  pro_integral: trapezoidal_area_divided_by_cap
+bootstrap: {unit: physical_object, iterations: 2000, seed: 20261031}
+inference_only: true
+training: false

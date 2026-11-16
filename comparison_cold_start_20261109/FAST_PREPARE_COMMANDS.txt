@@ -1,0 +1,10 @@
+# Switch to faster preparation manually.
+# In the OLD preparation terminal: press Ctrl+C and wait for the shell prompt.
+# Keep prepared/ and all existing cache files. Do not run two preparation jobs.
+
+cd /media/avlab/1CE6451EE644FA12/2026_10_22_dinomaly/comparison_cold_start_20261109
+bash run.sh prepare --resume --workers 4
+
+# Wait for "Preparation COMPLETE" and "Exit status: 0".
+# Then continue with the smoke commands in RUN_COMMANDS.txt.
+# If disk contention is severe: Ctrl+C, wait, then resume with --workers 2.

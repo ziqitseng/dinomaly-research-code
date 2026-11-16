@@ -1,0 +1,44 @@
+run_id: analysis_shared_failure_20261103
+split_id: shared_split_task02_v1
+categories:
+  failure_enriched: [lattice_block_plug, laser_diode, power_jack]
+  requested_extension: [LED_indicator]
+  preselected_good_control: aircraft_model_head
+preselection:
+  basis: full-run category summaries from the new ArcAD prototype-initialized run and DiNomaly2 original full-run log
+  category: aircraft_model_head
+  selected_before_shared-split_re_evaluation: true
+spatial:
+  source_size: [1024, 1024]
+  common_crop: center_87_5_percent
+  common_map_size: [256, 256]
+  d2_sampling: bilinear_grid_sample_align_corners_false
+  gt_resampling: nearest
+thresholds:
+  nominal_normal_fpr: [0.01, 0.05, 0.10]
+  calibration_source: model-specific normal-only training samples mapped to the common crop; no test labels
+  view_threshold_statistic: maximum view score across five views of each normal calibration object
+  object_threshold_statistic: pooled top-1-percent score across the five common-crop maps per normal object
+  calibration_status: in-sample normal reference, not an independent held-out validation set
+  report_as_deployable: false
+bootstrap:
+  unit: paired_physical_object
+  iterations: 2000
+  seed: 20261103
+  confidence_level: 0.95
+geometry:
+  component_connectivity: 8
+  size_bins_area_fraction: [0.001, 0.01, 0.05]
+  top_k_pixel_fractions: [0.001, 0.005, 0.01, 0.02, 0.05]
+  region_iou_thresholds: [0.1, 0.3, 0.5]
+metrics:
+  f1: oracle_max_F1_only
+  macro: equal_category_weight
+  micro: pooled_sample_metrics
+  p_aupro_fpr_cap: 0.3
+  p_aupro_thresholds: 200
+  pixel_deltas: common_crop_only
+limitations:
+  - low_three_categories_are_failure_enriched_and_selection_biased
+  - per_category_arcad_normal_calibration_samples_are_small_and_seen_during_training
+  - no_fusion_hyperparameters_selected_without_independent_validation

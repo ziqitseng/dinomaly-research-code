@@ -1,0 +1,39 @@
+# Local data, trained weights, and generated experiment output
+dataset/
+datasets/
+out/
+outputs/
+results/
+runs/
+logs/
+weights/
+checkpoints/
+ckpts/
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.npz
+*.npy
+*.csv
+*.tar
+*.tar.gz
+*.zip
+
+# Python environments and caches
+.conda/
+.conda_pkgs/
+venv/
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Local credentials and machine settings
+.env
+.env.*
+!.env.example
+.aws/
+.codex/
+.agents/
+.idea/

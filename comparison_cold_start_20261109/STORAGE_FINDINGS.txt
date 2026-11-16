@@ -1,0 +1,44 @@
+Storage inspected 2026-11-09 (read-only).
+
+Configured raw data and existing 1024 copy:
+  /media/avlab/7458a474-6ea2-4b90-b232-373c3df8d329/
+  /dev/sda2, ext4, Crucial CT4000MX500SSD1, ROTA=0, SATA SSD.
+  About 725 GiB free at inspection. The raw source is already on SSD.
+
+Current experiment and prepared/ cache:
+  /media/avlab/1CE6451EE644FA12/2026_10_22_dinomaly/
+  /dev/sdb1, fuseblk, Seagate ST4000DM004-2CV104, ROTA=1, HDD.
+  Cache construction reads/verifies and writes many small PNG files here.
+  Training currently opens these PNGs synchronously and checks pixel hashes.
+
+Preferred cache destination:
+  /media/avlab/afd90e24-420c-46a0-95e0-c017b48d0db0/
+  /dev/nvme1n1p2, ext4, WD_BLACK SN850X 1000GB, ROTA=0, NVMe SSD.
+  About 497 GiB free at inspection.
+  Proposed directory: real_iad_variety_cold_start_cache_20261109/prepared
+
+The system/root SSD has only about 7 GiB free: do not put the full cache in /tmp.
+
+The latest fast-preparation snapshot was an interrupted/failed attempt:
+  989/197265 eligible records, about 9.54 records/s, 20581 s (~5.72 h) ETA.
+  2477 existing cache files reused, zero new PNG files written in that attempt.
+  Thus its early speed also reflects HDD reads to verify the legacy cache.
+  It is not a measured full-run duration or a training estimate.
+
+Physical relocation only:
+  Keep raw sources/config/relative cache paths unchanged. Move all of prepared/
+  (including SQLite journal) to NVMe and use a directory link at the old path.
+  Existing source fingerprints and cache bytes remain valid for resume.
+  MOVE_PREPARED_TO_SSD.sh defaults to a plan. --execute is manual opt-in.
+  The helper checks for active preparation, copies/checksums the data, and keeps
+  the HDD folder as a backup. The assistant has not executed the migration.
+
+Compute budget remains substantial:
+  100000 optimizer updates x 2 models x 3 seeds = 600000 updates total,
+  plus prototype fitting and six full evaluations. SSD storage cannot remove
+  this GPU work. Measure representative update time before estimating training
+  or choosing a shorter paired pilot. No step/seed budget was changed.
+
+The existing 1024 copy is already on the SATA SSD. Switching to it as the input
+would be a separate preprocessing change: direct raw-to-392 and raw-to-1024-to-392
+are not guaranteed to give identical pixels. It has not been switched silently.

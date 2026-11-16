@@ -1,0 +1,7 @@
+# Data quality and source-mask audit
+
+The 919 positive laser_diode views in the paired Task 02 manifest were reread from original source masks. The 41 views previously flagged as empty on the common field resolve to 39 views with a nonzero 1024×1024 source mask entirely outside `[64:960) × [64:960)`, plus 2 genuinely all-zero source masks (`NG/OilStain/S0005`, C1 and C4). No exception was caused only by 224×224 downsampling. The remaining 878 positive views have nonempty masks in the common field. All 41 exception views have five-camera contact sheets in `empty_mask_contact_sheet/`; these require manual review before attributing the issue to visibility, annotation, or a label error.
+
+Original image/view labels and object labels are retained; no mask or label was changed. Task 01's two OilStain/S0005 cases are contained in the Task 03 list; the other 39 cases explain why Task 02's common-crop empty-mask count was 41. Source shape, source/crop/resized nonzero pixels, camera, defect type, sibling views, and split label checks are in `empty_mask_audit.csv`.
+
+Other split/image/mask issues are recorded in `protocol_audit.json`, `alignment_reverification.json`, and `native_split_counts_160.csv`. One ArcAD-labeled object/category occurs in the D2 native test manifest for each of the five diagnostic categories; all such objects were excluded from the paired shared Task 02 manifest. No ArcAD-labeled object or D2 training object remains in the shared diagnostic split.

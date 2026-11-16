@@ -1,0 +1,43 @@
+# Protocol B — manual terminal commands
+# Run one command at a time. Wait for "Exit status: 0" before continuing.
+# run.sh selects the existing ArcAD Python environment; no conda activation needed.
+# If the OLD prepare command is running: Ctrl+C there, wait for the prompt,
+# then use the prepare --resume command below. Keep prepared/ and its cache files.
+
+# 1. Open the experiment folder.
+cd /media/avlab/1CE6451EE644FA12/2026_10_22_dinomaly/comparison_cold_start_20261109
+
+# 2. Initial setup — run once. Preflight requires 200 GiB free.
+bash run.sh preflight
+bash run.sh test
+bash run.sh prepare --resume --workers 4
+bash run.sh smoke arcad --device cuda:0
+bash run.sh smoke dinomaly2 --device cuda:0
+
+# 3. Seed 1 — train, then evaluate each model.
+bash run.sh train arcad 1 --device cuda:0
+bash run.sh evaluate arcad 1 --device cuda:0
+bash run.sh train dinomaly2 1 --device cuda:0
+bash run.sh evaluate dinomaly2 1 --device cuda:0
+
+# 4. Seed 2.
+bash run.sh train arcad 2 --device cuda:0
+bash run.sh evaluate arcad 2 --device cuda:0
+bash run.sh train dinomaly2 2 --device cuda:0
+bash run.sh evaluate dinomaly2 2 --device cuda:0
+
+# 5. Seed 3.
+bash run.sh train arcad 3 --device cuda:0
+bash run.sh evaluate arcad 3 --device cuda:0
+bash run.sh train dinomaly2 3 --device cuda:0
+bash run.sh evaluate dinomaly2 3 --device cuda:0
+
+# 6. Write the final comparison after all six evaluations finish.
+bash run.sh summarize
+
+# Final report: results/RESULTS.md
+# Terminal logs: logs/     Model outputs: runs/
+
+# OPTIONAL: resume interrupted training from its latest checkpoint.
+# Change model/seed below to the interrupted run. Do not repeat completed stages.
+# bash run.sh train arcad 1 --device cuda:0 --resume
